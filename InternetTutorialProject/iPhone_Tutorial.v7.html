@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone Tutorial!</title>
+
+    <style>
+        body,
+        html {
+            text-align: center;
+            font-family: 'stylish';
+            color: white;
+
+            /*
+            Background Image Source: https://coolbackgrounds.io/
+            */
+
+            background-image: url('background3.png');
+            background-position: center;
+            background-repeat: repeat-y;
+            background-size: cover;
+            height: 100%;
+
+
+        }
+
+        .nextButton {
+
+            position: absolute;
+            bottom: 50px;
+            right: 100px;
+            font-size: 28px;
+        }
+
+        .Blue {
+            color: blue;
+            font-size: 21px;
+        }
+
+        .Green {
+            color: green;
+            font-size: 21px;
+        }
+
+        .Dark-Yellow {
+
+            color: rgb(252, 161, 3);
+            font-size: 21px;
+        }
+
+        .Purple {
+
+            color: purple;
+            font-size: 21px;
+        }
+
+        .Pink {
+
+            color: pink;
+            font-size: 21px;
+        }
+
+        .Red {
+
+            color: red;
+            font-size: 21px;
+        }
+
+        .Orange {
+
+            color: orange;
+            font-size: 21px;
+        }
+
+        .header {
+            font-size: 42px;
+
+        }
+
+        h2 {
+            font-size: 42px;
+
+        }
+
+        .intro {
+            font-size: 21px;
+        }
+
+        .colorInstructions {
+            font-size: 24px;
+        }
+
+        .skillClass {
+            text-align: center;
+            position: absolute;
+            bottom: 500px;
+            right: 700px;
+            font-size: 24px;
+        }
+
+        .smartClass {
+            text-align: center;
+            font-size: 24px;
+        }
+    </style>
+
+    <script>
+
+        /*
+        Background Image Source: https://coolbackgrounds.io/
+        */
+
+        //Global Variables being initialized
+        var randomInteger;
+        var randColor1;
+        var randColor2;
+        var randColor3;
+        var name = "";
+        var colorArray = [];
+        var colorMessage = "<br> Selected Colors: <br><br>";
+        var colorCounter = 0;
+        var nextCounter = 0;
+        var skillCheck;
+        var lessonOutput = '';
+
+        function randomInt(min, max) {
+            //Description: Return a random integer, n, such that min <= n <= max
+            //Code Citation: Mozzilla Foundation, https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+            //Input: Two floating point number min and max
+            //Output: Returns a random integer between min and max
+            min = Math.ceil(min);
+            max = Math.floor(max);
+
+            return Math.floor(Math.random() * (max - min + 1)) + min; //inclusive on min and max
+
+        }
+
+
+        function addName() {
+            /*
+            Description: This function takes in a string (name), via a textbox, and displays it underneath the textbox
+            Input: The name entered by the user, in the textbox
+            Output:It takes the string (name), and is displayed in the div, underneath the textbox
+            Citation: N/A
+            */
+
+            name = document.getElementById('nameInputId').value;
+            //The inner HTML of the div tag underneath the textbox is being set equal to the user's name
+            document.getElementById('divNameId').innerHTML = "<br> Hi, " + name;
+        }
+
+        function addColor() {
+            /*
+            Description: This function adds the desired color, selected by user, to a string (for output message) and array (list)
+            Input: The click of the button, which calls this function, and the selected color from the select box
+            Output: It displays a message with all the selected colors
+            Citation: N/A 
+            */
+
+            //This portion adds the selected color to the array (list)
+            var selectedColor = document.getElementById('inputColorId').value;
+            colorArray.push(selectedColor);
+
+            //console.log(colorArray);
+
+            //This adds the selected color for the output color message
+            colorMessage += selectedColor + "<br>";
+
+
+            document.getElementById('outputColorDivId').innerHTML = colorMessage;
+        }
+
+        function randomColor() {
+            /*
+            Description: This function randomly- random index is given by helper function "randomInt()" -takes a color from 
+            the array to be used as a font color later in the program
+            Input: The click of the button, 'next', which calls the function redirect, which then creates local variables to be set equal to 'selectedColor', by calling this function
+            Output: It returns, "selectedColor", the randomly selected color from the list, "colorArray", to be set equal to local variables in the, "redirect()", function
+            Citation: N/A 
+            */
+            randomInteger = randomInt(0, colorArray.length - 1);
+            var selectedColor = colorArray[randomInteger];
+            return selectedColor;
+
+        }
+
+
+
+        function skillTest() {
+
+            /*
+            Description: This function is used to gather the data from the user responses, amd assign it to "skillCheck"
+            Input: The input is the response from the multiple choice selection box
+            Output: The messsage (string) and a boolean value being assigned to "skillCheck"
+            Citation: N/A
+            */
+
+            var skillMessage = "";
+            var yesWP;
+            var yesLG;
+            //console.log(nextCounter);
+
+            //WP stands for wallpaper
+            if (nextCounter == 1) {
+                //This code segment checks to see if the user selected "YES!" for their answer submission
+                yesWP = document.getElementById('yesWPCheckId').checked;
+
+            }
+
+
+            //LG stands for language
+            if (nextCounter == 3) {
+                //This code segment checks to see if the user selected "YES!" for their answer submission
+                yesLG = document.getElementById('yesLGCheckId').checked;
+            }
+            //console.log(yesWP);
+
+            //This is to make sure the quetions don't stay on the page during the entirety of the program running
+            document.getElementById('skillDivId').innerHTML = "";
+
+
+            //console.log(yes);
+
+            if (yesWP == true) {
+                //If "YES!" was selected for the wallpaper question then a value of true will be assigned to "skillCheck"
+                skillCheck = yesWP;
+                console.log(skillCheck);
+
+            }
+            else if (yesWP == false) {
+                //If "YES!" was not selected for the wallpaper question then a value of false will be assigned to "skillCheck"
+                skillCheck = yesWP;
+                skillCheck = false;
+                console.log(skillCheck);
+            }
+
+            if (yesLG == true) {
+                //If "YES!" was selected for the language question then a value of true will be assigned to "skillCheck"
+                skillCheck = yesLG;
+                console.log(skillCheck);
+
+            }
+            else if (yesLG == false) {
+                //If "YES!" was not selected for the language question then a value of false will be assigned to "skillCheck"
+                skillCheck = yesLG;
+                console.log(skillCheck);
+            }
+
+            console.log(skillCheck);
+
+            skillMessage += "<span class = " + randColor1 + ">Thank you, for answering! Please click <bold> Next </bold> when you are ready to move on! </span>";
+
+            //This displays the message 
+            document.getElementById('skillDivId').innerHTML = skillMessage;
+
+
+        }
+
+
+        function composeLesson(lessonNumber, skill) {
+            /*Description: This function is used to compose the lesson, or play a special message if they know what's on this lesson!
+            Input: The input is the lesson the user is on, and the skille level they're at in this particular lesson, which is selected through a multiple-choice selection box.
+            Output: The lesson or the 'You're so smart message', which contains all randomized colors for the text!
+            Image Citations: //You're So Smart Gif Ciation: https://tenor.com/view/smart-so-sosmart-gif-15534259 */
+            var continueMessage = "";
+            var finalMessage = "";
+            //This for-loop is used to give a random color, to three variables, to be used for the color of the text!
+            //The splicingof the color from, "colorArray", ensures that no colors get repeated right next to each other
+            for (var i = 0; i < 3; i++) {
+
+                if (i == 0) {
+                    randColor1 = randomColor();
+                    colorArray.splice[randomInteger];
+
+                }
+                if (i == 1) {
+                    randColor2 = randomColor();
+                    colorArray.splice[randomInteger];
+                }
+                if (i == 2) {
+                    randColor3 = randomColor();
+                    colorArray.splice[randomInteger];
+                }
+            }
+            //If the user is on lesson one this portion of the if-else statement runs
+            if (lessonNumber == 'lessonOne') {
+
+                //If they know how to do this part of the lesson, then it runs this part of the if-else statement!
+                if (skill == true) {
+                    //When this portion of the if-else statement runs it displays a funny message and meme!
+                    continueMessage += "<br><br><br><br><br><br><p class = 'smartClass'><span class =" + randColor1 + "><strong>WOW!</strong> You are so <bold>smart</bold> that you didn't need to learn this lesson.</span><span class =" + randColor2 + "><br> Please click next to move on to the next lesson!</span> <br> <br></p>"
+                    //You're So Smart Gif Ciation: https://tenor.com/view/smart-so-sosmart-gif-15534259
+                    continueMessage += "<img src = 'smart.gif'>"
+                    continueMessage += "";
+                    finalMessage = continueMessage;
+                    return finalMessage;
+                }
+                else {
+                    //This is the actual lesson itself, which includes an image that I took myself!
+                    finalMessage = "<p class = 'header'> Welcome to <strong>Lesson 1</strong>, " + name + "! </p>";
+                    //My own image that I made
+                    finalMessage += "<img src = 'iphoneFinalEdit3.jpg'> <br><br><br>";
+                    //Directions for the tutorial
+                    finalMessage += "<br><br><h2> <strong> <u> Directions! </u> </strong> <br><br></h2>";
+                    //Randcolor1 is inserted to implement the random color functionality of the program
+                    finalMessage += "<p class = 'smartClass'><span class = " + randColor1 + "> <strong>1.)</strong> Begin by tapping on the settings app </span> <br><br>";
+                    finalMessage += '<span class = ' + randColor2 + '> <strong>2.)</strong> Next, scroll down on your screen. Then, tap on the <strong>"Wallpaper"</strong> icon </span> <br><br>';
+                    //Randcolor2 is inserted to implement the random color functionality of the program
+                    finalMessage += '<span class = ' + randColor3 + '> <strong>3.)</strong> As you can see in the image above, you need to click the <strong>"Choose a New Wallpaper"</strong> icon </span> <br><br>';
+                    //Randcolor3 is inserted to implement the random color functionality of the program
+                    finalMessage += '<span class = ' + randColor1 + '> <strong>4.)</strong> Now, click on any icon, or your camera roll to pick your own images, for your desired background! </span> <br><br></p>';
+                    //Randcolor1 is inserted to implement the random color functionality of the program
+
+                    return finalMessage;
+                }
+            }
+            //If the user is on lesson two this portion of the if-else statement runs
+            if (lessonNumber == "lessonTwo") {
+                //If they know how to do this part of the lesson, then it runs this part of the if-else statement!
+                if (skill == true) {
+                    //When this portion of the if-else statement runs it displays a funny message and meme!
+                    continueMessage += "<span class =" + randColor1 + ".<strong>WOW!</strong> You are so <bold>smart</bold> that you didn't need to learn this lesson.</span><span class =" + randColor2 + "><br> Please click next to move on to the next lesson!</span> <br> <br>"
+                    //You're So Smart Gif Ciation: https://tenor.com/view/smart-so-sosmart-gif-15534259
+                    continueMessage += "<img src = 'smart.gif'>"
+                    continueMessage += "";
+                    finalMessage = continueMessage;
+                    return finalMessage;
+                }
+                else {
+                    //This is the actual lesson itself, which includes an image that I took myself!
+                    finalMessage = " <p class = 'header'> Welcome to <strong>Lesson 2</strong>, " + name + "! </p>";
+                    //My own image that I made
+                    finalMessage += "<img src = 'iphoneFinalEdit2.jpg'> <br><br><br>";
+                    //Directions for the tutorial!
+                    finalMessage += "<br><br><h2> <strong> <u> Directions! </u> </strong> <br><br></h2>";
+                    //Randcolor1 is inserted to implement the random color functionality of the program
+                    finalMessage += "<p class = 'smartClass'><span class = " + randColor1 + "> <strong>1.)</strong> Begin by tapping on the settings app </span> <br><br>";
+                    //Randcolor1 is inserted to implement the random color functionality of the program
+                    finalMessage += '<span class = ' + randColor2 + '> <strong>2.)</strong> Next, scroll down on your screen. Then, tap on the <strong>"General"</strong> icon </span> <br><br>';
+                    //Randcolor1 is inserted to implement the random color functionality of the program
+                    finalMessage += '<span class = ' + randColor3 + '> <strong>3.)</strong> As you can see in the image above, you need to click the <strong>"Language & Region"</strong> icon </span> <br><br>';
+                    //Randcolor1 is inserted to implement the random color functionality of the program
+                    finalMessage += '<span class = ' + randColor1 + '> <strong>4.)</strong> Now, click on the <strong> iPhone Language </strong> icon </span> <br><br>';
+                    //Randcolor1 is inserted to implement the random color functionality of the program
+                    finalMessage += '<span class = ' + randColor2 + '> <strong>5.)</strong> Last but not least, search, scroll, and find the language you desire to change to! </span> <br><br></p>';
+                    //Randcolor1 is inserted to implement the random color functionality of the program
+
+                    return finalMessage;
+
+
+                }
+
+
+            }
+
+
+
+
+        }
+
+
+        function redirect() {
+
+            /*
+            Description: This function acts as the button hub, depending on where the user is on the lesson it performs and outputs certain messages
+            Input: The click of the button, "Next!"
+            Output: It displays a message/lesson and sometimes an image!
+            Citation: N/A
+            */
+
+            document.getElementById('introDivId').innerHTML = "";
+            document.getElementById('skillDivId').innerHTML = "";
+            var skillQuestion = '';
+
+            console.log(nextCounter);
+
+            //If the next counter is at 0, it asks them the wallpaper question
+            if (nextCounter == 0) {
+                skillQuestion = '<br><br> Hi! Do you know how to change the wallpaper on your iPhone?  <br><br>  <input type="radio" id="yesWPCheckId" value = "Yes!" name = "skillWPName">';
+                skillQuestion += '<label for="yesCheckId">YES!</label><br><br>'
+                skillQuestion += '<input type="radio" id="noWPCheckId" value="No!" name = "skillWPName"> <label for="noCheckId">NO!</label> <br> <button class = "button" onClick = "skillTest()">Submit</button>'
+
+                //console.log(typeof skillQuestion);
+                document.getElementById('skillDivId').innerHTML = skillQuestion;
+
+                nextCounter += 1;
+
+
+
+
+            }
+
+            //If the next counter is at 1, it displays the lesson or message depending on their skill level
+            else if (nextCounter == 1) {
+
+                lessonOutput = composeLesson('lessonOne', skillCheck);
+                console.log(skillCheck);
+                document.getElementById('introDivId').innerHTML = lessonOutput;
+                nextCounter += 1;
+                //console.log(nextCounter);
+
+            }
+
+            //If the next counter is at 2, it asks them the language question
+            else if (nextCounter == 2) {
+                //console.log('hello')
+
+                skillQuestion = '<br><br> Hi! Do you know how to change the language on your iPhone?  <br><br>  <input type="radio" id="yesLGCheckId" value = "Yes!" name = "skillLGName">';
+                skillQuestion += '<label for="yesCheckId">YES!</label><br><br>'
+                skillQuestion += '<input type="radio" id="noLGCheckId" value="No!" name = "skillLGName"> <label for="noCheckId">NO!</label> <br> <button class = "button" onClick = "skillTest()">Submit</button>'
+                document.getElementById('skillDivId').innerHTML = skillQuestion;
+                nextCounter += 1;
+
+            }
+            //If the next counter is at 3, it displays the lesson or message depending on their skill level
+            else if (nextCounter == 3) {
+
+                lessonOutput = composeLesson('lessonTwo', skillCheck);
+                document.getElementById('introDivId').innerHTML = lessonOutput;
+                nextCounter += 1;
+                console.log(nextCounter);
+
+            }
+            //If the next counter is at 4, it displays a message thanking the user for using this program today
+            else if (nextCounter == 4) {
+
+                document.getElementById('skillDivId').innerHTML = "Thanks for using our platform to learn! <strong>More lessons</strong> coming soon!"
+
+            }
+            console.log(nextCounter);
+
+
+
+        }
+
+        //console.log(randomColor());
+
+    </script>
+</head>
+
+<body>
+
+    <div id="introDivId">
+
+        <h1>Learn How To Use Your iPhone <strong>Fast!</strong></h1>
+        <br> <br>
+        <p class='intro'><strong>Welcome!</strong> This website will teach you how to use the different features on your
+            iPhone!</p>
+        <br><br><br>
+        <input type="text" id="nameInputId" placeholder="Type Your Name Here">
+        <button onClick="addName()" class="button">Save Name</button>
+
+        <div id="divNameId"></div>
+
+        <br><br><br>
+
+        <div id="colorInfoDivId">
+
+            <p class="colorInstructions">Please add your <strong>favorite</strong> colors!</p>
+            <select id="inputColorId">
+                <option>Blue</option>
+                <option>Green</option>
+                <option>Dark-Yellow</option>
+                <option>Purple</option>
+                <option>Pink</option>
+                <option>Red</option>
+                <option>Orange</option>
+            </select>
+            <button onClick="addColor()" class="button">Add Color</button>
+        </div>
+
+        <div id="outputColorDivId" class='colorInstructions'></div>
+
+
+    </div>
+
+    <div id="skillDivId" class='skillClass'></div>
+
+    <button class="nextButton" onClick="redirect()">Next</button>
+</body>
+
+</html>
