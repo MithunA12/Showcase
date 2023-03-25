@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<title> Monster Mash</title>
+
+	<style>
+		.center {
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		body {
+			background: #FFA17F;
+			/* fallback for old browsers */
+			background: -webkit-linear-gradient(to right, #00223E, #FFA17F);
+			/* Chrome 10-25, Safari 5.1-6 */
+			background: linear-gradient(to right, #00223E, #FFA17F);
+			/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+			text-align: center;
+
+		}
+
+		h1 {
+			color: rgb(231, 226, 226);
+		}
+
+		table {
+			color: rgb(202, 196, 196);
+		}
+
+		div {
+			color: rgb(206, 200, 200);
+			font-size: 45px;
+		}
+	</style>
+	<script>
+
+		// initialize global variables here
+		var playerOneDeck = [];
+		var playerTwoDeck = [];
+		var playerOneCardIndex;
+		var playerTwoCardIndex;
+		var playerOneCurrentCard;
+		var playerTwoCurrentCard;
+		var cardCount = 8;
+
+
+
+		//Image 1 source: https://giphy.com/explore/funny-monster
+		//Image 2 source: https://giphy.com/gifs/filmeditor-disney-pixar-3o6wrdG8vt4X86Pauc
+		//Image 3 source: https://giphy.com/gifs/monsters-kaiju-godzilla-TDMwAs1KQVQWI
+		//Image 4 source: https://giphy.com/gifs/beard-movember-no-shave-3o85xy4f9QOzAKNqx2
+
+		var monsterImageArray = ["monstergif1.gif", "monstergif2.gif", "monstergif3.gif", "monstergif4.gif"];
+
+
+		var gameState = "game over";
+
+
+
+		function randomInt(min, max) {
+			//Description: Return a random integer, n, such that min <= n <= max
+			//Citation: Mozzilla Foundation, https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+			//Input: Two floating point number min and max
+			//Output: Returns a random integer between min and max
+			min = Math.ceil(min);
+			max = Math.floor(max);
+
+			return Math.floor(Math.random() * (max - min + 1)) + min; //inclusive on min and max
+
+		}
+
+		function formatImage(inputArray, index) {
+			/*
+			Decription: Formats image to be displayed in the future.
+			Citation:  N/A
+			Input: Not much input, other than the fact that they have to click any of the buttons which will display images.
+			Output: It takes the file and concatenates to show it's source, and it formats it to a specific size.
+			*/
+			var fileName = inputArray[index];
+
+			var output = "<img src='images/" + fileName + "' width=450 height=450>";
+
+			return output;
+		}
+		function updateCounters() {
+			// update the displayed value for the number of cards left in Player 1's Deck
+			document.getElementById("p1CountId").innerHTML = "Player 1 Card Count: " + playerOneDeck.length;
+			// update the displayed value for the number of cards left in Player 2's Deck
+			document.getElementById("p2CountId").innerHTML = "Player 2 Card Count: " + playerTwoDeck.length;
+		}
+
+		function dealNewCards() {
+			// update the currently-selected index for each deck of cards to an (appropriate) random value
+
+			playerOneCardIndex = randomInt(0, playerOneDeck.length - 1);
+			console.log(playerOneCardIndex);
+			playerOneCurrentCard = formatImage(playerOneDeck, playerOneCardIndex);
+			//console.log(playerOneCurrentCard);
+			playerTwoCardIndex = randomInt(0, playerTwoDeck.length - 1);
+			console.log(playerTwoCardIndex);
+			playerTwoCurrentCard = formatImage(playerTwoDeck, playerTwoCardIndex);
+
+			document.getElementById("image1Id").innerHTML = playerOneCurrentCard;
+			document.getElementById("image2Id").innerHTML = playerTwoCurrentCard;
+
+			// update the currently-selected card for each player: DONE
+			// update the displayed images: DONE
+
+			// call the function that updates the card count
+			updateCounters();
+		}
+		// this function starts a new game of Monster Match
+		function startNewGame() {
+			// re-initialize all relevant variables 
+			cardCount = 8;
+			gameState = "play";
+			playerOneDeck = [];
+			playerTwoDeck = [];
+			// set all relevent .innerHTML properties as appropriate
+			document.getElementById("player1Id").innerHTML = "Player One";
+			document.getElementById("player2Id").innerHTML = "Player Two";
+
+			document.getElementById("image1Id").innerHTML = "";
+			document.getElementById("image2Id").innerHTML = "";
+
+			document.getElementById("p1CountId").innerHTML = cardCount;
+			document.getElementById("p2CountId").innerHTML = cardCount;
+			// write a for-loop that puts the correct number of cards in each player's deck
+			for (var i = 0; i < cardCount; i++) {
+				playerOneDeck.push(monsterImageArray[i % 4]);
+				playerTwoDeck.push(monsterImageArray[i % 4]);
+				console.log(playerOneDeck);
+
+			}
+			// call the function that deals new cards
+			dealNewCards();
+		}
+
+
+
+
+
+		function checkForWins() {
+			if (playerTwoDeck.length == 0) {
+				console.log(playerTwoDeck.length)
+				// if Player 2's deck has no cards in it:
+				var playerMessage = "Congratulations! Player One has won the game!";
+				// 1) tell the user that Player 1 has won
+				gameState = "game over";
+				// 2) set the game state to "game over"
+				document.getElementById("playerMessageId").innerHTML = playerMessage;
+			}
+			if (playerOneDeck.length == 0) {
+				// if Player 1's deck has no cards in it:
+				var playerMessage = "Congratulations! Player Two has won the game!";
+				// 1) tell the user that Player 2 has won
+				gameState = "game over";
+				// 2) set the game state to "game over"
+				document.getElementById("playerMessageId").innerHTML = playerMessage;
+			}
+
+		}
+
+		function checkMatch(event) {
+			// use a variable to store the keypress detected by event
+			var curKey = event.key;
+			// if the game state is play:
+			if (gameState == "play") {
+
+				if (curKey == "a") {
+					// if the keypress is "a":
+
+					// if the cards match:
+					if (playerOneCurrentCard == playerTwoCurrentCard) {
+						// inform the user that Player 1 has claimed the match
+						var playerMessage = "Player 1 has claimed the match!"
+						// .push Player 2's card into Player 1's deck
+						playerOneDeck.push(playerTwoDeck[playerTwoCardIndex]);
+						// .splice the card out of Player 2's deck
+						playerTwoDeck.splice(playerTwoCardIndex, 1);
+						//console.log(playerTwoDeck);
+
+						document.getElementById("playerMessageId").innerHTML = playerMessage;
+
+
+
+					}
+					else {
+						// otherwise:
+
+						// inform the user that Player 1 has misfired & forfeits their card
+						var playerMessage = "Player 1 has misfired and forfeits their card!";
+						// .push Player 1's card into Player 2's deck
+						playerTwoDeck.push(playerOneDeck[playerOneCardIndex]);
+						// .splice the card out of Player 1's deck	
+						playerOneDeck.splice(playerOneCardIndex, 1);
+
+						document.getElementById("playerMessageId").innerHTML = playerMessage;
+					}
+					// call the function that updates counters
+					updateCounters();
+					// call the function that checks for wins
+					checkForWins();
+
+					gameState = "pause";
+
+
+				}
+
+				// otherwise, if the keypress is "l":
+				else if (curKey == 'l') {
+					// adapt the logic above to "l" as appropriate
+					if (playerOneCurrentCard == playerTwoCurrentCard) {
+						var playerMessage = "Player 2 has claimed the match!"
+						playerTwoDeck.push(playerOneDeck[playerOneCardIndex]);
+						playerOneDeck.splice(playerOneCardIndex, 1);
+						document.getElementById("playerMessageId").innerHTML = playerMessage;
+
+					}
+					else {
+						var playerMessage = "Player 2 has misfired and forfeits their card!";
+						playerOneDeck.push(playerTwoDeck[playerTwoCardIndex]);
+						playerTwoDeck.splice(playerTwoCardIndex, 1);
+
+						document.getElementById("playerMessageId").innerHTML = playerMessage;
+
+					}
+					updateCounters();
+					checkForWins();
+					gameState = "pause";
+				}
+				else if (curKey == "n") {
+					// otherwise, if the keypress is "n":
+					if (playerOneCurrentCard == playerTwoCurrentCard) {
+						// if the cards match:
+						var playerMessage = "WAIT! There is a match on the board!";
+						// inform the user that there is a match on the board
+						gameState = "play";
+						// set the game state to "play"
+						document.getElementById("playerMessageId").innerHTML = playerMessage;
+					}
+					else {
+						// otherwise:
+						// call the function that deals new cards
+						dealNewCards();
+						// set the game message to an empty string
+						var playerMessage = "";
+						// set the game state to "play"
+						gameState = "play";
+
+						document.getElementById("playerMessageId").innerHTML = playerMessage;
+
+
+					}
+				}
+			}
+			// otherwise, if the game state is "pause":
+			else if (gameState == "pause") {
+
+				if (curKey = "n") {
+					// if the keypress is "n":
+					dealNewCards();
+					// call the function that deals new cards
+					var playerMessage = "";
+					// set the game message to an empty string
+					gameState = "play";
+					// set the game state to "play"
+
+					document.getElementById("playerMessageId").innerHTML = playerMessage;
+				}
+			}
+		}
+
+
+
+
+
+
+		function showInstructions() {
+			var instructionsMessage = "Each player has a deck of monster cards. Each round, a player will reveal a random card from"
+			instructionsMessage += " their deck. If the cards match, it is a 'Monster Match.' The fastest player can claim the other player's"
+			instructionsMessage += " card (it is removed from the deck of the slower player's deck and added to the faster player's deck)."
+			instructionsMessage += " Player 1 can claim a match by pressing 'a' before Player 2 can claim the match by pressing 'l'."
+			instructionsMessage += " If a player presses 'a' or 'l' when there is not a match, they will give up thier card. If the cards"
+			instructionsMessage += " don't match, press 'n' to start the next round. When a player has claimed all the other player's cards, that player wins the game."
+
+			document.getElementById("instructionsId").innerHTML = instructionsMessage;
+		}
+	</script>
+</head>
+
+<body onKeyUp="checkMatch(event)">
+	<h1>The Monster Match!</h1>
+
+
+	<input type="button" value="Start New Game" onClick="startNewGame()">
+	<input type="button" value="Show Instructions" onClick="showInstructions()">
+
+
+	<table class="center">
+		<tr>
+			<th><span id="player1Id"></span></th>
+			<th><span id="player2Id"></span></th>
+		</tr>
+		<tr>
+			<th><span id="image1Id"></span></th>
+			<th><span id="image2Id"></span></th>
+		</tr>
+		<tr>
+			<th><span id="p1CountId"></span></th>
+			<th><span id="p2CountId"></span></th>
+		</tr>
+	</table>
+
+	<div id="instructionsId"></div>
+	<div id="gameStateId"></div>
+
+	<div id="playerMessageId"></div>
+
+	<!-- add <div> elements with appropriate ids for a game message and game instructions-->
+</body>
+
+</html>

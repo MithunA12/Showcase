@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Ceasar Cipher</title>
+    <script>
+    var check;
+    var key;
+    let plainText = "";
+    var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    let cipherText = "";
+
+
+
+    function randomInt(min, max) {
+        //Description: Return a random integer, n, such that min <= n <= max
+        //Code Citation: Mozzilla Foundation, https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+        //Input: Two floating point number min and max
+        //Output: Returns a random integer between min and max
+        min = Math.ceil(min);
+        max = Math.floor(max);
+
+        return Math.floor(Math.random() * (max - min + 1)) + min; //inclusive on min and max
+
+    }
+
+    function randomKey(){
+
+        key = randomInt(0,25);
+        check = true; 
+        document.getElementById('randomId').innerHTML = key;
+
+    }
+
+    function toCipher(){
+
+        var output = '';
+        plainText = document.getElementById('plainTextId').value;
+        cipherText = document.getElementById('cipherTextId').value;
+
+        if (key != true){
+        key = document.getElementById('keyId').value;
+        }
+        key = Number(key);
+        //console.log(typeof(key));
+
+        plainText = plainText.toUpperCase();
+        cipherText = cipherText.toLowerCase();
+        //console.log(plainText);
+        plainIndexLength = plainText.length;
+        cipherIndexLength = cipherText.length;
+
+        for (var i = 0; i < plainIndexLength; i++){
+            //console.log(key);
+            var currentChar = plainText.charCodeAt(i);
+            if (currentChar == 33 || currentChar == 63 || currentChar == 240){
+                var convertedString = String.fromCharCode(currentChar);
+                output += convertedString;
+                document.getElementById('cipherTextId').value = output;
+
+            }
+            else{
+            //console.log(currentChar);
+            var newChar = currentChar + key;
+            //console.log(newChar);
+            var convertedString = String.fromCharCode(newChar);
+
+            output += convertedString;
+            //console.log(output);
+            }
+        }
+
+        for (var i = 0; i < cipherIndexLength; i++){
+            console.log(output);
+            var currentChar = cipherText.charCodeAt(i);
+            if (currentChar == 33 || currentChar == 63 || currentChar == 240){
+                var convertedString = String.fromCharCode(currentChar);
+                output += convertedString;
+                document.getElementById('plainTextId').value = output;
+
+            }
+            else{
+            //console.log(currentChar);
+            var newChar = currentChar - key;
+            //console.log(newChar);
+            var convertedString = String.fromCharCode(newChar);
+
+            output += convertedString;
+            //console.log(output);
+            }
+
+        }
+        
+        
+    }
+
+    
+    </script>
+</head>
+<body>
+<h1> Welcome to the <strong>Ceasar Cipher!</strong></h1>
+
+<input type = 'textbox' id = "plainTextId" placeholder = "Please enter your plaintext"> <br><br>
+<input type = 'textbox' id = "cipherTextId" placeholder = "Please enter your ciphertext"> <br> <br>
+<select id = 'keyId'>
+    <option value = '1'>1</option>
+    <option value = 2>2</option>
+    <option value = 3>3</option>
+    <option value = 4>4</option>
+    <option value = 5>5</option>
+    <option value = 6>6</option>
+    <option value = 7>7</option>
+    <option value = 8>8</option>
+    <option value = 9>9</option>
+    <option value = 10>10</option>
+    <option value = 11>11</option>
+    <option value = 12>12</option>
+    <option value = 13>13</option>
+    <option value = 14>14</option>
+    <option value = 15>15</option>
+    <option value = 16>16</option>
+    <option value = 17>17</option>
+    <option value = 18>18</option>
+    <option value = 19>19</option>
+    <option value = 20>20</option>
+    <option value = 21>21</option>
+    <option value = 22>22</option>
+    <option value = 23>23</option>
+    <option value = 24>24</option>
+    <option value = 25>25</option>
+    <option value = 26>26</option>
+
+</select> <br> <br>
+<input type = 'button' id = 'submitButtonId' value = "Submit!" onClick = 'toCipher()'><br>
+<input type = 'button' id = 'randomButtonId' value = "Random!" onClick = 'randomKey()'><br>
+<div id = 'randomId'></div>
+</body>
+</html>
