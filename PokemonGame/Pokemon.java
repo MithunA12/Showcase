@@ -1,6 +1,5 @@
 package Unit5.PokemonLab;
 
-import Unit5.HeroVillainExample.Power;
 
 public class Pokemon {
     //private variables

@@ -1,6 +1,6 @@
 package Unit5.PokemonLab;
 
-import Unit5.HeroVillainExample.Power;
+
 
 public class Trainer {
     //private variables
