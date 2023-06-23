@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chatbot</title>
+    <style>
+        /* Your updated styles go here */
+
+        #chat-container {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 350px;
+            /* Updated width */
+            height: 50px;
+            background-color: #ddd;
+            transition: height 0.5s;
+            overflow: hidden;
+            border: 2px solid #333;
+            /* Added a border */
+            border-bottom: none;
+            /* Removed bottom border */
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            cursor: pointer;
+            right: 15px;
+            /* Add some padding from the right edge of the screen */
+        }
+
+        #chat-container.open {
+            height: 450px;
+            /* Increased the open height */
+            cursor: default;
+        }
+
+        #chat-header {
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #chatbox {
+            height: calc(100% - 70px);
+            /* Adjusted height */
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+            /* Added top margin */
+        }
+
+        #input-container {
+            height: 60px;
+            /* Updated height */
+            display: flex;
+            align-items: center;
+            border-top: 1px solid #333;
+            /* Added top border */
+        }
+
+        #input-container input {
+            flex-grow: 1;
+            margin-right: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            /* Added border */
+        }
+
+        #submit-button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        #submit-button:hover {
+            background-color: #777;
+        }
+
+        .user-message,
+        .bot-message {
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: #aef;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background-color: #fea;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chat-container" onclick="toggleChat(event)">
+        <div id="chat-header">Click to chat</div> <!-- Moved the header to the top -->
+        <div id="chatbox"></div>
+        <div id="input-container">
+            <input id="user-input" type="text" placeholder="Type your message here..."
+                onkeydown="if(event.key==='Enter') submit(event)" />
+            <button id="submit-button" onclick="submit(event)">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat(event) {
+            if (event.target.id === "chat-container" || event.target.id === "chat-header") { /* Update the target IDs */
+                const chatContainer = document.getElementById('chat-container');
+                chatContainer.classList.toggle('open');
+            }
+        }
+
+        function submit(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const userInput = document.getElementById('user-input');
+            const chatbox = document.getElementById('chatbox');
+
+            const userDiv = document.createElement('div');
+            userDiv.textContent = userInput.value;
+            userDiv.className = 'user-message';
+            chatbox.appendChild(userDiv);
+
+            userInput.value = '';
+
+            fetch('http://localhost:5000/chatbot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'user_input': userDiv.textContent })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const botDiv = document.createElement('div');
+                    botDiv.textContent = data.response;
+                    botDiv.className = 'bot-message';
+                    chatbox.appendChild(botDiv);
+
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                });
+        }
+    </script>
+</body>
+
+</html>
