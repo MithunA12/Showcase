@@ -145,12 +145,12 @@
                 .then(response => response.json())
                 .then(data => {
                     const botDiv = document.createElement('div');
-                    botDiv.textContent = data.response;
                     botDiv.className = 'bot-message';
+                    botDiv.innerHTML = data.response;  // Use innerHTML instead of textContent
                     chatbox.appendChild(botDiv);
 
                     chatbox.scrollTop = chatbox.scrollHeight;
-                });
+                })
         }
     </script>
 </body>
