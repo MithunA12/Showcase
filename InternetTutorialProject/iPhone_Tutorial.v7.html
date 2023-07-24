@@ -6,32 +6,121 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iPhone Tutorial!</title>
-
     <style>
         body,
         html {
             text-align: center;
             font-family: 'stylish';
-            color: white;
-
-            /*
-            Background Image Source: https://coolbackgrounds.io/
-            */
-
+            color: black;
             background-image: url('background3.png');
             background-position: center;
             background-repeat: repeat-y;
             background-size: cover;
             height: 100%;
+        }
 
+        #chat-container {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 350px;
+            /* Updated width */
+            height: 50px;
+            background-color: #ddd;
+            transition: height 0.5s;
+            overflow: hidden;
+            border: 2px solid #333;
+            /* Added a border */
+            border-bottom: none;
+            /* Removed bottom border */
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            cursor: pointer;
+            right: 15px;
 
+        }
+
+        #chat-container.open {
+            height: 450px;
+            /* Increased the open height
+            cursor: default;
+        }
+
+        #chat-header {
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #chatbox {
+            height: calc(100% - 70px);
+            /* Adjusted height */
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+            /* Added top margin */
+        }
+
+        #input-container {
+            height: 60px;
+            /* Updated height */
+            display: flex;
+            align-items: center;
+            border-top: 1px solid #333;
+            /* Added top border */
+        }
+
+        #input-container input {
+            flex-grow: 1;
+            margin-right: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            /* Added border */
+        }
+
+        #submit-button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        #submit-button:hover {
+            background-color: #777;
+        }
+
+        .user-message,
+        .bot-message {
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            max-width: 90%;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: #aef;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background-color: #fea;
         }
 
         .nextButton {
 
             position: absolute;
             bottom: 50px;
-            right: 100px;
+            left: 100px;
             font-size: 28px;
         }
 
@@ -108,12 +197,6 @@
     </style>
 
     <script>
-
-        /*
-        Background Image Source: https://coolbackgrounds.io/
-        */
-
-        //Global Variables being initialized
         var randomInteger;
         var randColor1;
         var randColor2;
@@ -125,110 +208,53 @@
         var nextCounter = 0;
         var skillCheck;
         var lessonOutput = '';
-
         function randomInt(min, max) {
-            //Description: Return a random integer, n, such that min <= n <= max
-            //Code Citation: Mozzilla Foundation, https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-            //Input: Two floating point number min and max
-            //Output: Returns a random integer between min and max
             min = Math.ceil(min);
             max = Math.floor(max);
 
             return Math.floor(Math.random() * (max - min + 1)) + min; //inclusive on min and max
 
         }
-
-
         function addName() {
-            /*
-            Description: This function takes in a string (name), via a textbox, and displays it underneath the textbox
-            Input: The name entered by the user, in the textbox
-            Output:It takes the string (name), and is displayed in the div, underneath the textbox
-            Citation: N/A
-            */
 
             name = document.getElementById('nameInputId').value;
             //The inner HTML of the div tag underneath the textbox is being set equal to the user's name
             document.getElementById('divNameId').innerHTML = "<br> Hi, " + name;
         }
-
         function addColor() {
-            /*
-            Description: This function adds the desired color, selected by user, to a string (for output message) and array (list)
-            Input: The click of the button, which calls this function, and the selected color from the select box
-            Output: It displays a message with all the selected colors
-            Citation: N/A 
-            */
-
-            //This portion adds the selected color to the array (list)
             var selectedColor = document.getElementById('inputColorId').value;
             colorArray.push(selectedColor);
-
-            //console.log(colorArray);
-
-            //This adds the selected color for the output color message
             colorMessage += selectedColor + "<br>";
-
-
             document.getElementById('outputColorDivId').innerHTML = colorMessage;
         }
 
         function randomColor() {
-            /*
-            Description: This function randomly- random index is given by helper function "randomInt()" -takes a color from 
-            the array to be used as a font color later in the program
-            Input: The click of the button, 'next', which calls the function redirect, which then creates local variables to be set equal to 'selectedColor', by calling this function
-            Output: It returns, "selectedColor", the randomly selected color from the list, "colorArray", to be set equal to local variables in the, "redirect()", function
-            Citation: N/A 
-            */
             randomInteger = randomInt(0, colorArray.length - 1);
             var selectedColor = colorArray[randomInteger];
             return selectedColor;
 
         }
-
-
-
         function skillTest() {
-
-            /*
-            Description: This function is used to gather the data from the user responses, amd assign it to "skillCheck"
-            Input: The input is the response from the multiple choice selection box
-            Output: The messsage (string) and a boolean value being assigned to "skillCheck"
-            Citation: N/A
-            */
-
             var skillMessage = "";
             var yesWP;
             var yesLG;
-            //console.log(nextCounter);
 
             //WP stands for wallpaper
             if (nextCounter == 1) {
                 //This code segment checks to see if the user selected "YES!" for their answer submission
                 yesWP = document.getElementById('yesWPCheckId').checked;
-
             }
-
-
             //LG stands for language
             if (nextCounter == 3) {
                 //This code segment checks to see if the user selected "YES!" for their answer submission
                 yesLG = document.getElementById('yesLGCheckId').checked;
-            }
-            //console.log(yesWP);
-
+            };
             //This is to make sure the quetions don't stay on the page during the entirety of the program running
             document.getElementById('skillDivId').innerHTML = "";
-
-
-            //console.log(yes);
-
             if (yesWP == true) {
                 //If "YES!" was selected for the wallpaper question then a value of true will be assigned to "skillCheck"
                 skillCheck = yesWP;
                 console.log(skillCheck);
-
             }
             else if (yesWP == false) {
                 //If "YES!" was not selected for the wallpaper question then a value of false will be assigned to "skillCheck"
@@ -236,39 +262,25 @@
                 skillCheck = false;
                 console.log(skillCheck);
             }
-
             if (yesLG == true) {
                 //If "YES!" was selected for the language question then a value of true will be assigned to "skillCheck"
                 skillCheck = yesLG;
                 console.log(skillCheck);
-
             }
             else if (yesLG == false) {
                 //If "YES!" was not selected for the language question then a value of false will be assigned to "skillCheck"
                 skillCheck = yesLG;
                 console.log(skillCheck);
             }
-
             console.log(skillCheck);
-
             skillMessage += "<span class = " + randColor1 + ">Thank you, for answering! Please click <bold> Next </bold> when you are ready to move on! </span>";
 
             //This displays the message 
             document.getElementById('skillDivId').innerHTML = skillMessage;
-
-
         }
-
-
         function composeLesson(lessonNumber, skill) {
-            /*Description: This function is used to compose the lesson, or play a special message if they know what's on this lesson!
-            Input: The input is the lesson the user is on, and the skille level they're at in this particular lesson, which is selected through a multiple-choice selection box.
-            Output: The lesson or the 'You're so smart message', which contains all randomized colors for the text!
-            Image Citations: //You're So Smart Gif Ciation: https://tenor.com/view/smart-so-sosmart-gif-15534259 */
             var continueMessage = "";
             var finalMessage = "";
-            //This for-loop is used to give a random color, to three variables, to be used for the color of the text!
-            //The splicingof the color from, "colorArray", ensures that no colors get repeated right next to each other
             for (var i = 0; i < 3; i++) {
 
                 if (i == 0) {
@@ -347,34 +359,16 @@
                     //Randcolor1 is inserted to implement the random color functionality of the program
                     finalMessage += '<span class = ' + randColor2 + '> <strong>5.)</strong> Last but not least, search, scroll, and find the language you desire to change to! </span> <br><br></p>';
                     //Randcolor1 is inserted to implement the random color functionality of the program
-
                     return finalMessage;
-
-
                 }
-
-
             }
-
-
-
-
         }
 
-
         function redirect() {
-
-            /*
-            Description: This function acts as the button hub, depending on where the user is on the lesson it performs and outputs certain messages
-            Input: The click of the button, "Next!"
-            Output: It displays a message/lesson and sometimes an image!
-            Citation: N/A
-            */
 
             document.getElementById('introDivId').innerHTML = "";
             document.getElementById('skillDivId').innerHTML = "";
             var skillQuestion = '';
-
             console.log(nextCounter);
 
             //If the next counter is at 0, it asks them the wallpaper question
@@ -382,15 +376,10 @@
                 skillQuestion = '<br><br> Hi! Do you know how to change the wallpaper on your iPhone?  <br><br>  <input type="radio" id="yesWPCheckId" value = "Yes!" name = "skillWPName">';
                 skillQuestion += '<label for="yesCheckId">YES!</label><br><br>'
                 skillQuestion += '<input type="radio" id="noWPCheckId" value="No!" name = "skillWPName"> <label for="noCheckId">NO!</label> <br> <button class = "button" onClick = "skillTest()">Submit</button>'
-
                 //console.log(typeof skillQuestion);
                 document.getElementById('skillDivId').innerHTML = skillQuestion;
 
                 nextCounter += 1;
-
-
-
-
             }
 
             //If the next counter is at 1, it displays the lesson or message depending on their skill level
@@ -400,49 +389,79 @@
                 console.log(skillCheck);
                 document.getElementById('introDivId').innerHTML = lessonOutput;
                 nextCounter += 1;
-                //console.log(nextCounter);
 
             }
-
             //If the next counter is at 2, it asks them the language question
             else if (nextCounter == 2) {
-                //console.log('hello')
-
                 skillQuestion = '<br><br> Hi! Do you know how to change the language on your iPhone?  <br><br>  <input type="radio" id="yesLGCheckId" value = "Yes!" name = "skillLGName">';
                 skillQuestion += '<label for="yesCheckId">YES!</label><br><br>'
                 skillQuestion += '<input type="radio" id="noLGCheckId" value="No!" name = "skillLGName"> <label for="noCheckId">NO!</label> <br> <button class = "button" onClick = "skillTest()">Submit</button>'
                 document.getElementById('skillDivId').innerHTML = skillQuestion;
                 nextCounter += 1;
-
             }
-            //If the next counter is at 3, it displays the lesson or message depending on their skill level
-            else if (nextCounter == 3) {
 
+            else if (nextCounter == 3) {
                 lessonOutput = composeLesson('lessonTwo', skillCheck);
                 document.getElementById('introDivId').innerHTML = lessonOutput;
                 nextCounter += 1;
                 console.log(nextCounter);
-
-            }
-            //If the next counter is at 4, it displays a message thanking the user for using this program today
-            else if (nextCounter == 4) {
-
+            } else if (nextCounter == 4) {
                 document.getElementById('skillDivId').innerHTML = "Thanks for using our platform to learn! <strong>More lessons</strong> coming soon!"
-
             }
             console.log(nextCounter);
-
-
-
+        }
+    </script>
+    <script>
+        function toggleChat(event) {
+            if (event.target.id === "chat-container" || event.target.id === "chat-header") { /* Update the target IDs */
+                const chatContainer = document.getElementById('chat-container');
+                chatContainer.classList.toggle('open');
+            }
         }
 
-        //console.log(randomColor());
+        function submit(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const userInput = document.getElementById('user-input');
+            const chatbox = document.getElementById('chatbox');
 
+            const userDiv = document.createElement('div');
+            userDiv.textContent = userInput.value;
+            userDiv.className = 'user-message';
+            chatbox.appendChild(userDiv);
+
+            userInput.value = '';
+
+            fetch('http://localhost:5000/chatbot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'user_input': userDiv.textContent })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const botDiv = document.createElement('div');
+                    botDiv.className = 'bot-message';
+                    botDiv.innerHTML = data.response;  // Use innerHTML instead of textContent
+                    chatbox.appendChild(botDiv);
+
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                })
+        }
     </script>
 </head>
 
 <body>
-
+    <div id="chat-container" onclick="toggleChat(event)">
+        <div id="chat-header">Click to chat</div> <!-- Moved the header to the top -->
+        <div id="chatbox"></div>
+        <div id="input-container">
+            <input id="user-input" type="text" placeholder="Type your message here..."
+                onkeydown="if(event.key==='Enter') submit(event)" />
+            <button id="submit-button" onclick="submit(event)">Send</button>
+        </div>
+    </div>
     <div id="introDivId">
 
         <h1>Learn How To Use Your iPhone <strong>Fast!</strong></h1>
