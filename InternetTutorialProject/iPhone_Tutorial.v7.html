@@ -432,6 +432,13 @@
 
             userInput.value = '';
 
+            // Display a loading message or image while fetching
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'bot-message';
+            loadingDiv.innerHTML = '<img src="Loading_icon.gif">';
+            chatbox.appendChild(loadingDiv);
+            chatbox.scrollTop = chatbox.scrollHeight;
+
             fetch('http://localhost:5000/chatbot', {
                 method: 'POST',
                 headers: {
@@ -441,14 +448,15 @@
             })
                 .then(response => response.json())
                 .then(data => {
+                    chatbox.removeChild(loadingDiv); // Remove the loading message
                     const botDiv = document.createElement('div');
                     botDiv.className = 'bot-message';
                     botDiv.innerHTML = data.response;  // Use innerHTML instead of textContent
                     chatbox.appendChild(botDiv);
-
                     chatbox.scrollTop = chatbox.scrollHeight;
-                })
+                });
         }
+
     </script>
 </head>
 
